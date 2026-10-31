@@ -1,0 +1,195 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="theme-color" content="#0b1420" />
+    <title>The Little Ghost Cat — A Mansion of Memories</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+    <script type="module" crossorigin src="/assets/index-Dtoh9ueU.js"></script>
+    <link rel="stylesheet" crossorigin href="/assets/index-CEN9cw4O.css">
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="scene"></canvas>
+
+      <div id="loading" class="screen loading-screen">
+        <div class="loading-mark">
+          <div class="ghost-mark">
+            <span class="ear left"></span><span class="ear right"></span>
+            <span class="eye blue"></span><span class="eye amber"></span>
+          </div>
+        </div>
+        <p class="eyebrow">A small spirit stirs</p>
+        <div class="loading-bar"><i></i></div>
+      </div>
+
+      <div id="title-screen" class="screen title-screen hidden">
+        <div class="title-vignette"></div>
+        <div class="title-content">
+          <p class="eyebrow">A tiny supernatural tale</p>
+          <h1>The Little<br/><em>Ghost Cat</em></h1>
+          <div class="title-rule"><span></span><i>✦</i><span></span></div>
+          <p class="subtitle">A mansion of memories. A way home.</p>
+          <div class="title-actions">
+            <button id="btn-new" class="btn btn-primary">Begin the journey</button>
+            <button id="btn-continue" class="btn btn-ghost hidden">Continue</button>
+            <button id="btn-title-settings" class="btn btn-text">Settings</button>
+          </div>
+          <p class="title-hint">Best played with headphones · Keyboard, mouse, or touch</p>
+        </div>
+        <div class="title-footer">
+          <span>✦</span><p>Listen for the rain. The house remembers.</p><span>✦</span>
+        </div>
+      </div>
+
+      <div id="hud" class="hidden">
+        <header class="hud-top">
+          <div class="objective-panel">
+            <p class="hud-label">Objective</p>
+            <p id="objective-text">Wander the foyer</p>
+            <p id="objective-sub" class="objective-sub"></p>
+          </div>
+          <div class="hud-top-right">
+            <div class="memory-counter" id="memory-counter">
+              <span class="mem-orb"></span>
+              <span id="memory-count">0</span><span class="mem-total">/ 7 memories</span>
+            </div>
+            <button id="btn-journal" class="icon-btn" aria-label="Journal">✦</button>
+            <button id="btn-pause" class="icon-btn" aria-label="Pause">II</button>
+          </div>
+        </header>
+
+        <div id="room-banner" class="room-banner"><span></span><p></p><span></span></div>
+
+        <div id="interact-prompt" class="interact-prompt hidden">
+          <span class="keycap">E</span>
+          <span id="interact-label">Look closer</span>
+        </div>
+
+        <div id="controls-hint" class="controls-hint">
+          <span><b>WASD</b> move</span><span><b>Shift</b> run</span><span><b>Space</b> jump / hold to float</span><span><b>Drag</b> look</span><span><b>E</b> interact</span>
+        </div>
+
+        <div id="toast-stack" class="toast-stack"></div>
+
+        <div id="touch-ui" class="touch-ui">
+          <div id="joystick" class="joystick"><div class="joystick-knob"></div></div>
+          <div class="touch-actions">
+            <button id="btn-touch-run" class="touch-btn small" aria-label="Run">Run</button>
+            <button id="btn-touch-interact" class="touch-btn interact" aria-label="Interact">✦</button>
+            <button id="btn-touch-jump" class="touch-btn jump" aria-label="Jump">↑</button>
+          </div>
+        </div>
+        <div id="mobile-look-zone" class="mobile-look-zone"></div>
+      </div>
+
+      <div id="memory-card" class="overlay memory-card hidden">
+        <div class="memory-card-inner">
+          <div class="memory-art" id="memory-art"><div class="memory-art-glow"></div><div class="memory-art-scene"></div></div>
+          <div class="memory-copy">
+            <p class="eyebrow" id="memory-kicker">Memory recovered</p>
+            <h2 id="memory-title"></h2>
+            <div class="memory-rule"></div>
+            <p id="memory-text" class="memory-text"></p>
+            <p id="memory-sub" class="memory-sub"></p>
+            <button id="btn-memory-close" class="btn btn-primary">Keep it close</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="puzzle" class="overlay puzzle-screen hidden">
+        <div class="puzzle-card">
+          <p class="eyebrow" id="puzzle-kicker">The old piano</p>
+          <h2 id="puzzle-title">A song for rainy days</h2>
+          <p id="puzzle-clue" class="puzzle-clue"></p>
+          <div id="puzzle-keys" class="puzzle-keys"></div>
+          <div id="puzzle-feedback" class="puzzle-feedback"></div>
+          <button id="btn-puzzle-close" class="btn btn-text">Step away</button>
+        </div>
+      </div>
+
+      <div id="journal" class="overlay journal-screen hidden">
+        <div class="journal-card">
+          <header>
+            <div><p class="eyebrow">The cat's keepsakes</p><h2>A Book of Small Things</h2></div>
+            <button id="btn-journal-close" class="icon-btn">✕</button>
+          </header>
+          <div class="journal-body">
+            <section>
+              <h3>Memories</h3>
+              <div id="journal-memories" class="journal-memories"></div>
+            </section>
+            <aside>
+              <h3>Pockets</h3>
+              <div id="journal-items" class="journal-items"></div>
+              <h3>Places</h3>
+              <div id="journal-places" class="journal-places"></div>
+              <div class="journal-tip"><span>✦</span><p id="journal-hint">Explore the mansion. Glowing traces of memory are never far away.</p></div>
+            </aside>
+          </div>
+        </div>
+      </div>
+
+      <div id="pause" class="overlay pause-screen hidden">
+        <div class="pause-card">
+          <p class="eyebrow">The house waits</p>
+          <h2>Paused</h2>
+          <div class="pause-actions">
+            <button id="btn-resume" class="btn btn-primary">Return</button>
+            <button id="btn-save" class="btn btn-ghost">Save at this spot</button>
+            <button id="btn-pause-journal" class="btn btn-ghost">Journal</button>
+            <button id="btn-pause-settings" class="btn btn-ghost">Settings</button>
+            <button id="btn-pause-restart" class="btn btn-text">Restart journey</button>
+          </div>
+          <p id="save-note" class="save-note"></p>
+        </div>
+      </div>
+
+      <div id="settings" class="overlay settings-screen hidden">
+        <div class="settings-card">
+          <header><div><p class="eyebrow">Make yourself at home</p><h2>Settings</h2></div><button id="btn-settings-close" class="icon-btn">✕</button></header>
+          <div class="settings-grid">
+            <label class="setting"><span>Music</span><input id="set-music" type="range" min="0" max="1" step="0.01" /><em id="val-music"></em></label>
+            <label class="setting"><span>Ambience & sounds</span><input id="set-sfx" type="range" min="0" max="1" step="0.01" /><em id="val-sfx"></em></label>
+            <label class="setting"><span>Look sensitivity</span><input id="set-sensitivity" type="range" min="0.4" max="2.4" step="0.05" /><em id="val-sensitivity"></em></label>
+            <label class="setting"><span>Camera distance</span><input id="set-distance" type="range" min="2" max="6" step="0.1" /><em id="val-distance"></em></label>
+            <label class="setting toggle"><span>Soft bloom & light</span><input id="set-bloom" type="checkbox" /><i></i></label>
+            <label class="setting toggle"><span>Show control hints</span><input id="set-hints" type="checkbox" /><i></i></label>
+          </div>
+          <p class="settings-note">Audio begins after your first click, as browsers require.</p>
+          <button id="btn-settings-done" class="btn btn-primary">Done</button>
+        </div>
+      </div>
+
+      <div id="ending" class="overlay ending-screen hidden">
+        <div class="ending-inner">
+          <p class="eyebrow">The last memory</p>
+          <h1>Every home<br/><em>remembers.</em></h1>
+          <p id="ending-text" class="ending-text"></p>
+          <div class="ending-stats" id="ending-stats"></div>
+          <div class="ending-actions">
+            <button id="btn-ending-continue" class="btn btn-primary">Stay a while</button>
+            <button id="btn-ending-new" class="btn btn-text">Begin again</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="intro" class="overlay intro-screen hidden">
+        <div class="intro-inner">
+          <p class="eyebrow">Somewhere between sleep and waking</p>
+          <h2 id="intro-title">You are small.<br/>The house is very old.</h2>
+          <p id="intro-text">A candle gutters in the dark. You remember its warmth, but not your name.</p>
+          <button id="btn-intro" class="btn btn-primary">Open your eyes</button>
+        </div>
+      </div>
+
+      <div id="cinematic-bars" class="cinematic-bars hidden"><i class="top"></i><i class="bottom"></i></div>
+      <div id="fade" class="fade"></div>
+      <div id="vignette" class="vignette"></div>
+      <div id="grain" class="grain"></div>
+    </div>
+  </body>
+</html>
